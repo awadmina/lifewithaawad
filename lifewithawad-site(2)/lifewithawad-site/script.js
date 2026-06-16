@@ -1,49 +1,32 @@
-// ===== CONFIG & CONSTANTS =====
-// YouTube channel ID - replace with your channel ID
 const CHANNEL_ID = "UCV_e8q6koAtP-dtfpjgqPDA";
-// YouTube handle for display
 const YOUTUBE_HANDLE = "LifeWithAwad";
-// Number of videos to show in the grid
 const VIDEO_LIMIT = 6;
 
-// ===== DOM ELEMENTS =====
-// Main page elements
 const body = document.body;
 const loader = document.querySelector("[data-loader]");
 const header = document.querySelector("[data-header]");
 const nav = document.querySelector("[data-nav]");
 const menuToggle = document.querySelector("[data-menu-toggle]");
 const progress = document.querySelector("[data-scroll-progress]");
-
-// Video section elements
 const videoGrid = document.getElementById("videoGrid");
+const year = document.getElementById("year");
 const featureTitle = document.querySelector("[data-feature-title]");
 const featureDescription = document.querySelector("[data-feature-description]");
 const featureLink = document.querySelector("[data-feature-link]");
 const featureIframe = document.querySelector("[data-feature-iframe]");
 
-// Footer elements
-const year = document.getElementById("year");
-
-// ===== INITIALIZATION =====
-// Set current year in footer
 if (year) year.textContent = new Date().getFullYear();
 
-// ===== PAGE LOADER =====
-// Hide loading screen after page loads
 window.addEventListener("load", () => {
   window.setTimeout(() => loader?.classList.add("is-hidden"), 380);
 });
 
-// ===== MOBILE MENU FUNCTIONALITY =====
-// Close mobile navigation menu
 const closeMenu = () => {
   body.classList.remove("menu-open");
   nav?.classList.remove("is-open");
   menuToggle?.setAttribute("aria-expanded", "false");
 };
 
-// Toggle menu on button click
 menuToggle?.addEventListener("click", () => {
   const isOpen = menuToggle.getAttribute("aria-expanded") === "true";
   menuToggle.setAttribute("aria-expanded", String(!isOpen));
@@ -51,47 +34,24 @@ menuToggle?.addEventListener("click", () => {
   body.classList.toggle("menu-open", !isOpen);
 });
 
-// Close menu when a nav link is clicked
 nav?.querySelectorAll("a").forEach((link) => link.addEventListener("click", closeMenu));
-
-// Close menu on Escape key
 window.addEventListener("keydown", (event) => { if (event.key === "Escape") closeMenu(); });
 
-// ===== SCROLL INTERACTIONS =====
-// Get device card for 3D rotation effect
-const deviceCard = document.querySelector(".device-card");
-
-// Update header & scroll progress on scroll
 const updateChrome = () => {
-  // Add background to header when scrolled
   header?.classList.toggle("is-scrolled", window.scrollY > 12);
 
-  // Update scroll progress bar width
   if (progress) {
     const doc = document.documentElement;
     const max = doc.scrollHeight - doc.clientHeight;
     const pct = max > 0 ? (doc.scrollTop / max) * 100 : 0;
     progress.style.width = `${pct}%`;
   }
-
-  // Rotate device card based on scroll position
-  if (deviceCard) {
-    const doc = document.documentElement;
-    const max = doc.scrollHeight - doc.clientHeight;
-    const scrollPct = max > 0 ? doc.scrollTop / max : 0;
-    const rotation = 0 + scrollPct * 0;
-    const rotateYValue = 0 + scrollPct * -190;
-    deviceCard.style.transform = `rotateX(3deg) rotateY(${rotateYValue}deg) rotateZ(${rotation}deg)`;
-  }
 };
 
-// Initial call and scroll listeners
 updateChrome();
 window.addEventListener("scroll", updateChrome, { passive: true });
 window.addEventListener("resize", updateChrome);
 
-// ===== REVEAL ANIMATIONS =====
-// Animate elements when they enter viewport
 const revealItems = document.querySelectorAll(".reveal");
 if ("IntersectionObserver" in window) {
   const revealObserver = new IntersectionObserver((entries) => {
@@ -105,12 +65,9 @@ if ("IntersectionObserver" in window) {
 
   revealItems.forEach((item) => revealObserver.observe(item));
 } else {
-  // Fallback: show all if IntersectionObserver not supported
   revealItems.forEach((item) => item.classList.add("is-visible"));
 }
 
-// ===== UTILITY FUNCTIONS =====
-// Escape HTML special characters to prevent XSS
 const escapeHtml = (value = "") => String(value).replace(/[&<>'"]/g, (char) => ({
   "&": "&amp;",
   "<": "&lt;",
@@ -119,7 +76,6 @@ const escapeHtml = (value = "") => String(value).replace(/[&<>'"]/g, (char) => (
   '"': "&quot;",
 }[char]));
 
-// Format date string to readable format (e.g., "Jun 16, 2025")
 const formatDate = (dateString) => {
   const date = new Date(dateString);
   if (Number.isNaN(date.getTime())) return "Newest upload";
@@ -130,15 +86,12 @@ const formatDate = (dateString) => {
   }).format(date);
 };
 
-// Extract YouTube video ID from item object
 const getVideoId = (item) => {
   if (item.guid) return String(item.guid).replace("yt:video:", "");
   const match = item.link?.match(/[?&]v=([^&]+)/);
   return match ? match[1] : null;
 };
 
-// ===== VIDEO RENDERING =====
-// Show error notice when videos can't load
 const renderNotice = () => {
   if (!videoGrid) return;
   videoGrid.innerHTML = `
@@ -148,7 +101,6 @@ const renderNotice = () => {
   `;
 };
 
-// Update featured video details at top of section
 const updateFeaturedVideo = (item) => {
   const videoId = getVideoId(item);
   if (!videoId) return;
@@ -162,7 +114,6 @@ const updateFeaturedVideo = (item) => {
   if (featureIframe) featureIframe.src = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`;
 };
 
-// Render video cards grid from YouTube feed items
 const renderVideos = (items = []) => {
   if (!videoGrid) return;
 
@@ -201,12 +152,8 @@ const renderVideos = (items = []) => {
   updateFeaturedVideo(items[0]);
 };
 
-// ===== YOUTUBE FEED FETCHING =====
-// Fetch latest videos from YouTube RSS feed and render them
 const loadLatestVideos = async () => {
-  // YouTube RSS URL for channel
   const rssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
-  // Convert RSS to JSON using free API
   const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
 
   try {
@@ -223,5 +170,4 @@ const loadLatestVideos = async () => {
   }
 };
 
-// ===== RUN ON PAGE LOAD =====
 loadLatestVideos();
