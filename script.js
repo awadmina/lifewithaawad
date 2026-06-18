@@ -17,10 +17,9 @@ const progress = document.querySelector("[data-scroll-progress]");
 
 // Video section elements
 const videoGrid = document.getElementById("videoGrid");
-const featureTitle = document.querySelector("[data-feature-title]");
-const featureDescription = document.querySelector("[data-feature-description]");
-const featureLink = document.querySelector("[data-feature-link]");
-const featureIframe = document.querySelector("[data-feature-iframe]");
+const playlistTitle = document.querySelector("[data-playlist-title]");
+const playlistDescription = document.querySelector("[data-playlist-description]");
+const playlistLink = document.querySelector("[data-playlist-link]");
 
 // Footer elements
 const year = document.getElementById("year");
@@ -30,9 +29,9 @@ const year = document.getElementById("year");
 if (year) year.textContent = new Date().getFullYear();
 
 // ===== PAGE LOADER =====
-// Hide loading screen after page loads
-window.addEventListener("load", () => {
-  window.setTimeout(() => loader?.classList.add("is-hidden"), 380);
+// Hide loading screen once the HTML is ready
+window.addEventListener("DOMContentLoaded", () => {
+  window.setTimeout(() => loader?.classList.add("is-hidden"), 80);
 });
 
 // ===== MOBILE MENU FUNCTIONALITY =====
@@ -58,9 +57,6 @@ nav?.querySelectorAll("a").forEach((link) => link.addEventListener("click", clos
 window.addEventListener("keydown", (event) => { if (event.key === "Escape") closeMenu(); });
 
 // ===== SCROLL INTERACTIONS =====
-// Get device card for 3D rotation effect
-const deviceCard = document.querySelector(".device-card");
-
 // Update header & scroll progress on scroll
 const updateChrome = () => {
   // Add background to header when scrolled
@@ -72,16 +68,6 @@ const updateChrome = () => {
     const max = doc.scrollHeight - doc.clientHeight;
     const pct = max > 0 ? (doc.scrollTop / max) * 100 : 0;
     progress.style.width = `${pct}%`;
-  }
-
-  // Rotate device card based on scroll position
-  if (deviceCard) {
-    const doc = document.documentElement;
-    const max = doc.scrollHeight - doc.clientHeight;
-    const scrollPct = max > 0 ? doc.scrollTop / max : 0;
-    const rotation = 0 + scrollPct * 0;
-    const rotateYValue = 0 + scrollPct * -190;
-    deviceCard.style.transform = `rotateX(3deg) rotateY(${rotateYValue}deg) rotateZ(${rotation}deg)`;
   }
 };
 
@@ -148,18 +134,17 @@ const renderNotice = () => {
   `;
 };
 
-// Update featured video details at top of section
-const updateFeaturedVideo = (item) => {
+// Update latest video details in the playlist panel
+const updatePlaylistSummary = (item) => {
   const videoId = getVideoId(item);
   if (!videoId) return;
 
   const title = item.title || "Latest LifeWithAwad upload";
   const link = item.link || `https://www.youtube.com/watch?v=${videoId}`;
 
-  if (featureTitle) featureTitle.textContent = title;
-  if (featureDescription) featureDescription.textContent = `Published ${formatDate(item.pubDate || item.published)}. Watch the newest story from the LifeWithAwad channel.`;
-  if (featureLink) featureLink.href = link;
-  if (featureIframe) featureIframe.src = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`;
+  if (playlistTitle) playlistTitle.textContent = title;
+  if (playlistDescription) playlistDescription.textContent = `Published ${formatDate(item.pubDate || item.published)}. Watch the newest story from the LifeWithAwad`;
+  if (playlistLink) playlistLink.href = link;
 };
 
 // Render video cards grid from YouTube feed items
@@ -198,7 +183,7 @@ const renderVideos = (items = []) => {
   }
 
   videoGrid.innerHTML = videos;
-  updateFeaturedVideo(items[0]);
+  updatePlaylistSummary(items[0]);
 };
 
 // ===== YOUTUBE FEED FETCHING =====
@@ -210,7 +195,7 @@ const loadLatestVideos = async () => {
   const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
 
   try {
-    const response = await fetch(apiUrl, { cache: "no-store" });
+    const response = await fetch(apiUrl);
     if (!response.ok) throw new Error("Video feed unavailable");
 
     const data = await response.json();
@@ -224,4 +209,4 @@ const loadLatestVideos = async () => {
 };
 
 // ===== RUN ON PAGE LOAD =====
-loadLatestVideos();
+if (videoGrid) loadLatestVideos();

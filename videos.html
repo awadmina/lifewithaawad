@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#080705" />
+  <meta name="description" content="Newest LifeWithAwad videos and official YouTube playlist." />
+  <meta property="og:title" content="LifeWithAwad Videos" />
+  <meta property="og:description" content="Newest videos, live from the LifeWithAwad channel." />
+  <meta property="og:type" content="website" />
+  <title>Videos | LifeWithAwad</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="page-loader" data-loader aria-hidden="true"><div class="loader-mark"><img src="profilePicture.jpeg" alt="" /></div></div>
+  <div class="ambient" aria-hidden="true">
+    <span class="halo halo-one"></span><span class="halo halo-two"></span><span class="halo halo-three"></span><span class="noise"></span><span class="vignette"></span>
+  </div>
+  <div class="scroll-progress" data-scroll-progress aria-hidden="true"></div>
+  <header class="site-header" data-header>
+    <a class="brand" href="index.html" aria-label="LifeWithAwad home">
+      <span class="brand-icon"><img src="profilePicture.jpeg" alt="Mina Awad" /></span>
+      <span class="brand-copy"><strong>LifeWithAwad</strong><small>Faith • Visuals • Life</small></span>
+    </a>
+    <button class="menu-button" type="button" aria-expanded="false" aria-controls="primary-navigation" data-menu-toggle>
+      <span></span><span></span><span></span><em class="sr-only">Open menu</em>
+    </button>
+    <nav class="primary-nav" id="primary-navigation" data-nav aria-label="Primary navigation">
+      <a href="videos.html">Videos</a>
+      <a href="world.html">World</a>
+      <a href="beloved.html">Beloved</a>
+      <a href="work.html">Work</a>
+      <a href="about.html">About</a>
+      <a href="contact.html" class="nav-cta">Contact</a>
+    </nav>
+  </header>
+  <main id="main">
+    <section class="section videos-section" id="videos">
+      <div class="section-heading page-shell reveal">
+        <p class="eyebrow"><span></span> Latest from YouTube</p>
+        <div>
+          <h2>Newest videos, live on the site.</h2>
+          <p>The official playlist stays connected to your channel, while the custom cards try to pull your recent uploads from YouTube.</p>
+        </div>
+      </div>
+      <div class="video-stage page-shell reveal">
+        <div class="playlist-panel">
+          <div>
+            <span class="section-chip">Official YouTube playlist</span>
+            <h3>Always connected to the channel.</h3>
+            <h4 class="playlist-live-title" data-playlist-title>Latest LifeWithAwad upload</h4>
+            <p data-playlist-description>Published May 11, 2026. Watch the newest story from the LifeWithAwad.</p>
+            <a class="button button-primary playlist-button" href="https://www.youtube.com/shorts/GlSK5SsTEaI" target="_blank" rel="noopener" data-playlist-link>Open channel →</a>
+          </div>
+          <div class="responsive-video">
+            <iframe
+              src="https://www.youtube.com/embed/videoseries?list=UUV_e8q6koAtP-dtfpjgqPDA&rel=0&modestbranding=1"
+              title="LifeWithAwad latest uploads playlist"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+        <div class="video-grid" id="videoGrid" aria-live="polite">
+          <article class="video-skeleton"></article>
+          <article class="video-skeleton"></article>
+          <article class="video-skeleton"></article>
+          <article class="video-skeleton"></article>
+          <article class="video-skeleton"></article>
+          <article class="video-skeleton"></article>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer page-shell">
+    <div><strong>LifeWithAwad</strong><p>Faith. Creativity. Life through my lens.</p></div>
+    <div class="footer-links">
+      <a href="videos.html">Videos</a>
+      <a href="beloved.html">Beloved</a>
+      <a href="contact.html">Contact</a>
+      <a href="#main">Back to top ↑</a>
+    </div>
+    <small>© <span id="year"></span> LifeWithAwad. All rights reserved.</small>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
